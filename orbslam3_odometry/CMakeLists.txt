@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(orbslam3_odometry)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
@@ -27,9 +25,7 @@ set(AMENT_DEPENDENCIES
     image_transport
     message_filters
     nav_msgs
-    ORB_SLAM3
-    Pangolin
-    Sophus
+    orb_slam3_ros2
     rclcpp
     sensor_msgs
     tf2_geometry_msgs
@@ -42,13 +38,7 @@ foreach(Dependency IN ITEMS ${AMENT_DEPENDENCIES})
 endforeach()
 
 find_package(OpenCV REQUIRED COMPONENTS highgui)
-
-include_directories(
-  include
-  ${ORB_SLAM3_ROOT_DIR}/include
-  ${ORB_SLAM3_ROOT_DIR}/include/CameraModels
-  ${ORB_SLAM3_ROOT_DIR}/Thirdparty/Sophus
-)
+find_package(Boost REQUIRED COMPONENTS serialization)  # Technically I should get this from ORBSLAM3 but I can't be bothered debugging
 
 # orbslam3_stereo
 #
@@ -57,10 +47,17 @@ add_executable(orbslam3_stereo
   src/stereo/stereo_node.cpp
   src/stereo/stereo_rectification.cpp
 )
+target_include_directories(orbslam3_stereo
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
 ament_target_dependencies(orbslam3_stereo
-  ${AMENT_DEPENDENCIES} )
+  ${AMENT_DEPENDENCIES}
+)
 target_link_libraries(orbslam3_stereo
-  ${OpenCV_LIBRARIES})
+  ${OpenCV_LIBRARIES}
+  -lboost_serialization   # This is horrible, why do I need to do this?
+)
 
 
 # orbslam3_mono
@@ -69,10 +66,16 @@ add_executable(orbslam3_mono
   src/monocular/monocular.cpp
   src/monocular/monocular_node.cpp
 )
+target_include_directories(orbslam3_mono
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
 ament_target_dependencies(orbslam3_mono
   ${AMENT_DEPENDENCIES} )
 target_link_libraries(orbslam3_mono
-  ${OpenCV_LIBRARIES})
+  ${OpenCV_LIBRARIES}
+    -lboost_serialization   # This is horrible, why do I need to do this?
+)
 
 # orbslam3_check_stereo
 #
@@ -80,10 +83,16 @@ add_executable(orbslam3_check_stereo
   src/stereo/just_check_stereo_calibration.cpp
   src/stereo/stereo_rectification.cpp
 )
+target_include_directories(orbslam3_check_stereo
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
 ament_target_dependencies(orbslam3_check_stereo
   ${AMENT_DEPENDENCIES} )
 target_link_libraries(orbslam3_check_stereo
-  ${OpenCV_LIBRARIES})
+  ${OpenCV_LIBRARIES}
+      -lboost_serialization   # This is horrible, why do I need to do this?
+)
 
 #
 # Install targets
