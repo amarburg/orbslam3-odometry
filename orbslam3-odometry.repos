@@ -1,0 +1,5 @@
+repositories:
+  orb_slam3_ros2:
+    type: git
+    url: https://github.com/amarburg/orb_slam3_ros2
+    version: main

@@ -1,0 +1,69 @@
+/orbslam3_odometry:
+  ros__parameters:
+    # Topic for subscription
+    topic_camera_left: /left/image_rect
+    topic_camera_info_left: /left/camera_info
+
+    topic_camera_right: /right/image_rect
+    topic_camera_info_right: /right/camera_info
+
+    topic_imu: /imu  # will be ignored
+
+    # Topic for odometry pubblication
+    topic_orbslam_odometry: /Odometry/orbSlamOdom
+    topic_header_frame_id: fl_track
+    topic_child_frame_id: orbslam3
+
+    # ORB_SLAM3 mode. Poxibilities are:
+    #   mono
+    #   stereo
+    #   stereo_imu    # will be ignored
+    # Monocular mode will subscribe to topic_camera_left if topic_is_camera_left is true
+    system_mode: stereo
+
+    # For monocular version only. It indicates whether to subscribe to camera left or right topic for images.
+    #   true    -> camera left's topic
+    #   false   -> camera right
+    is_camera_left: true
+
+    # For monocular version only, since it has no depth info. It indicates the scale to multiply the calculated position (usually between 5 and 10)
+    # Da testare
+    scale_position_mono: 5
+
+    # For monocular version only. Degree to move the calculated pose. If 0 pose will not be changed.
+    degree_move_pose_mono: 10
+
+    # cropping parameters (for both monocular and stereo).
+    # Set how you want to crop your images before giving them to ORB-SLAM. The crop is perfomed like this:
+    #   cropping_rect = cv::Rect(cropping_x, cropping_y, cropping_width, cropping_height);
+    #   new_image = old_image(cropping_rect);
+    # if cropping_x is -1, the images will not be cropped.
+    cropping_x: -1
+    cropping_y: 0
+    cropping_width: 0
+    cropping_height: 0
+
+    # Visualizer of map created by ORBSLAM3 and images passed with ROS2.
+    #   false to disable the visualizer
+    #   true to enable it
+    pangolin_visualization: true
+
+    # For stereo mode only. Doesn't make ORB_SLAM3 start (if true). It just shows the results of the stereo calibration with the params in the path_yaml_settings
+    just_check_stereo_calibration: false
+
+    # Parameter to help you to take pictures.
+    # true: take photo for calibration (press spacebar to take photo). Doesn't make ORB_SLAM3 start.
+    # false: disable this functionality
+    just_take_picture: false
+
+    # The following params should be set in the launchfile (where package paths
+    # can be used)
+    #
+    # Full file path to vocabulary of ORB_SLAM3
+    # path_vocabulary: /home/aaron/workspace/aquarium/ORB_SLAM3/Vocabulary/ORBvoc.txt
+
+    # Full file path to yaml settings (for ORB_SLAM3)
+    # path_yaml_settings: /home/aaron/workspace/aquarium/orbslam3_ws/src/orbslam3-odometry/src/orbslam3_odometry/config/aquarium_nano_stereo.yaml
+
+    # Gamma correction applied to images before processing.
+    gamma_correction: 1.3
