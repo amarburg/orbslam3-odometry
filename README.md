@@ -1,4 +1,4 @@
-> ![WARNING]
+> [!WARNING]
 > NOTE:  This repo has been migrated to Gitlab at [https://gitlab.com/apl-ocean-engineering/orbslam3_odometry_ros2](https://gitlab.com/apl-ocean-engineering/orbslam3_odometry_ros2).   This version has been archived.
 
 # orbslam3-odometry
