@@ -1,3 +1,6 @@
+> ![WARNING]
+> NOTE:  This repo has been migrated to Gitlab at [https://gitlab.com/apl-ocean-engineering/orbslam3_odometry_ros2](https://gitlab.com/apl-ocean-engineering/orbslam3_odometry_ros2).   This version has been archived.
+
 # orbslam3-odometry
 ## Introduction
 This repository is ROS2 wrapping to use ORB_SLAM3 and to publish ORB_SLAM3 Odometry on ROS2 topic.
